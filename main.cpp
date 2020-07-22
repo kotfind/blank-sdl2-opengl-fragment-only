@@ -4,7 +4,7 @@
 #include <SDL2/SDL_opengl.h>
 #include <iostream>
 
-#include "mainpart.h"
+#include "mainpart.hpp"
 
 using namespace std;
 
