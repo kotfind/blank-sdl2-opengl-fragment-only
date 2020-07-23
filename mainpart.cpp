@@ -13,7 +13,19 @@ void mainpart(void) {
 
     // Mainloop
     SDL_Event e;
+    float last_time = SDL_GetTicks() / 1000.;
     for(;;) {
+        // Count time
+        float time = SDL_GetTicks() / 1000.;
+        float dtime = last_time - time;
+        last_time = time;
+
+        // Count resolution
+        int W, H;
+        SDL_GetWindowSize(win, &W, &H);
+        glViewport(0, 0, W, H);
+
+        // Event loop
         bool quit = 0;
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
@@ -22,14 +34,11 @@ void mainpart(void) {
         }
         if (quit) break;
 
-        // Set the time uniform
-        float time = SDL_GetTicks();
-        glUniform1f(uTime, time);
+        // Keyboard
+        const Uint8 *key = SDL_GetKeyboardState(NULL);
 
-        // Set the resolution uniform
-        int W, H;
-        SDL_GetWindowSize(win, &W, &H);
-        glViewport(0, 0, W, H);
+        // Set uniforms
+        glUniform1f(uTime, time);
         glUniform2i(uResolution, W, H);
 
         glClear(GL_COLOR_BUFFER_BIT);
